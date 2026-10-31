@@ -1,5 +1,5 @@
 import axios from "axios"
-import type { Horse, IStrapiResponse } from "./types"
+import type { Horse, IHorseInput, IStrapiResponse } from "./types"
 
 export const API_URL = import.meta.env.VITE_API_URL
 const API_KEY = import.meta.env.VITE_API_KEY
@@ -21,4 +21,10 @@ const getHorses = async (): Promise<IStrapiResponse<Horse[]>> => {
     return res.data
 }
 
-export const api = { getHorses }
+const createHorse = (data: IHorseInput) =>
+    apiInstance.post<IStrapiResponse<Horse>>("/horses", { data })
+
+const deleteHorse = (documentId: string) =>
+    apiInstance.delete(`/horses/${documentId}`)
+
+export const api = { getHorses, deleteHorse, createHorse }

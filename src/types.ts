@@ -8,6 +8,7 @@ export type Spec = "ShowJumping" | "Dressage" | "Triathlon"
 export type Breed = "RWP" | "OrlovTrotter" | "Trakehner" | "KWPN" | "Budyonovskaya" |
 "Sangerschneider" | "TrojanPony" | "Crossbreed"
 
+export type IHorseInput = Omit<Horse, "id" | "documentId" | "createdAt" | "updatedAt" | "publishedAt">
 
 export interface Horse {
   id: number
@@ -24,7 +25,7 @@ export interface Horse {
   specialization: Spec
   breed: Breed
   gender: Gender
-  fotochka: Fotochka[]
+  fotochka?: Fotochka[]
 }
 
 export interface Fotochka {

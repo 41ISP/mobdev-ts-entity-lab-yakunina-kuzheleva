@@ -1,4 +1,47 @@
+import { useState } from "react"
+import { breed, gender } from "../util"
+import type { Breed, Gender, IHorseInput, Spec } from "../types"
+import { useHorsesStore } from "../store/useHorseStore"
+import { api } from "../api"
+
 export function EntityForm() {
+   const initialForm = {
+    name: "",
+    DOB: "",
+    owner: "",
+    suit: "",
+    height: 0,
+    training: false,
+    specialization: "ShowJumping" as Spec,
+    breed: "Crossbreed" as Breed,
+    gender: "Mare" as Gender,
+    fotochka: []
+   
+}
+
+export function EntityForm() {
+    const [form, setForm] = useState<IHorseInput>(initialForm)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const { getHorses } = useHorsesStore()
+    
+    const onChange = <K extends keyof typeof form>(key: K, value: typeof form[K]) => {
+        setForm((j) => ({ ...j, [key]: value }))
+    }
+
+    const onSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        try {
+            setIsLoading(true)
+            await api.createHorse(form)
+            getHorses()
+            setForm(initialForm)
+        } catch (error) {
+            console.error(error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+   
     return (
         <form className="form">
             <h2>Добавить сущность</h2>

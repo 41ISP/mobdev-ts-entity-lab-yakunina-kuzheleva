@@ -23,16 +23,29 @@ export default function App() {
             }
         }
         load()
+   const intervalId = setInterval(() => {
+            try {
+                getHorses()
+            } catch (error) {
+                console.error(error)
+            }
+        }, 5000)
+        return () => {
+            clearInterval(intervalId)
+        }
     }, [])
 
     useEffect(() => {
         console.log(horses)
     }, [horses])
+
     return (
         <div className="layout">
             <header className="top">
-                <h1>Мои сущности</h1>
-                <span className="pill">Количество</span>
+                <h1>Мои лошадки</h1>
+                {horses?.meta && (
+                    <span>{horses?.meta?.pagination.total} в коллекции</span>
+                )}
             </header>
 
             <aside>
